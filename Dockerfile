@@ -1,0 +1,67 @@
+FROM openkbs/jre-mvn-py3
+
+USER root
+WORKDIR /app/python-services
+#RUN python3 -m venv env
+#RUN /bin/bash -c 'source ./env/bin/activate'
+
+# Set up proxy
+#ARG MY_PROXY_URL=http://proxy-grp1.lb-priv.sv2.247-inc.net:3128
+#ENV HTTP_PROXY=$MY_PROXY_URL
+#ENV HTTPS_PROXY=$MY_PROXY_URL
+#ENV FTP_PROXY=$MY_PROXY_URL
+#ENV http_proxy=$MY_PROXY_URL
+#ENV https_proxy=$MY_PROXY_URL
+#ENV ftp_proxy=$MY_PROXY_URL
+
+ARG service=pyjenkins
+ARG version=1.2
+COPY requirements.txt .
+
+#Install python packages
+RUN pip install -r requirements.txt
+ADD flaskapp ./flaskapp
+COPY README.md setup.py ./
+COPY settings.xml ./
+
+RUN pip install --user --upgrade setuptools wheel
+RUN python3 setup.py pyassembly
+
+RUN mvn deploy:deploy-file --settings /app/python-services/settings.xml -Durl=http://nexus.cicd.sv2.247-inc.net/nexus/content/repositories/thirdparty/ -DrepositoryId=ce-snapshots -DgroupId=com.tfs.pyservices -DartifactId=$service -Dversion=$version -Dpackaging=egg -Dfile=pyassembly_dist/pyjenkins-latest-py3.6.egg -Dproject.deploy.releaseRepositoryId=ce-release -Dproject.deploy.snapshotRepositoryId=ce-snapshots
+
+FROM python:3.7-slim
+# Set up proxy
+#ARG MY_PROXY_URL=http://proxy-grp1.lb-priv.sv2.247-inc.net:3128
+#ENV HTTP_PROXY=$MY_PROXY_URL
+#ENV HTTPS_PROXY=$MY_PROXY_URL
+#ENV FTP_PROXY=$MY_PROXY_URL
+#ENV http_proxy=$MY_PROXY_URL
+#ENV https_proxy=$MY_PROXY_URL
+#ENV ftp_proxy=$MY_PROXY_URL
+
+RUN apt-get update; \
+    apt-get install -y vim gcc nginx curl sudo net-tools procps
+
+# Add nginx conf for python service
+COPY nginx-pyservices /etc/nginx/sites-available/
+RUN ln -s /etc/nginx/sites-available/nginx-pyservices /etc/nginx/sites-enabled
+
+WORKDIR /app/python-services
+
+# Set the time to PDT to match host Centos machine
+RUN cp /usr/share/zoneinfo/PST8PDT /etc/localtime
+
+# Copy the egg artifacts from first docker image and place it in current directory
+COPY --from=0 /app/python-services/pyassembly_dist/pyjenkins-latest-py3.6.egg ./
+
+#Installing the python packages to site-packages
+RUN easy_install --allow-hosts=None pyjenkins-latest-py3.6.egg; exit 0
+
+COPY requirements.txt start-gunicorn.sh ./
+RUN chmod 770 start-gunicorn.sh
+RUN pip install gunicorn==20.0.4
+
+EXPOSE 8080
+
+# Starting the flask application
+CMD sleep 1 && /etc/init.d/nginx restart && ./start-gunicorn.sh
