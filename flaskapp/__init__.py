@@ -36,5 +36,5 @@ def create_app(test_config=None):
 
 app = create_app()
 
-if __name__ == '__main__':
-    app.run(host=sys.argv[1],port=sys.argv[2])
+# if __name__ == '__main__':
+#     app.run(host=sys.argv[1],port=sys.argv[2])
