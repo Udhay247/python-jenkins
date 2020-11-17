@@ -7,3 +7,4 @@ gevent==1.4.0
 setuptools==50.3.2
 wheel==0.35.1
 pyassembly==2.3
+coverage==5.3

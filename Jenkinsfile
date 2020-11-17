@@ -13,13 +13,29 @@
 pipeline {
     agent any
     stages {
+        stage("Generating coverage"){
+            agent{
+                dockerfile{
+                    filename 'Dockerfile'
+                    label 'pythonenv'
+                }
+            }
+            steps{
+                sh "coverage run -m pytest && coverage xml"
+            }
+        }
+
+        stage('Copying coverage report from container'){
+            steps{
+                sh " docker cp pythonenv:/app/pyhton-services ."
+            }
+        }
         stage('build && SonarQube analysis') {
             environment {
                 scannerHome = tool 'sonarscanner1'
             }
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh "coverage run -m pytest"
                     sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
                 }
             }
