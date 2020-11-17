@@ -15,7 +15,10 @@ pipeline {
     stages {
         stage("Generating coverage"){
             agent{
-                dockerfile true
+                dockerfile{
+                    filename 'Dockerfile.build'
+                    additionalBuildArgs '-t pythonenv'
+                }true
             }
             steps{
                 sh "coverage run -m pytest && coverage xml"
