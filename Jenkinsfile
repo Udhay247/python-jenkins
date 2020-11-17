@@ -18,7 +18,7 @@ pipeline {
                 dockerfile{
                     filename 'Dockerfile.build'
                     additionalBuildArgs '-t pythonenv'
-                }true
+                }
             }
             steps{
                 sh "coverage run -m pytest && coverage xml"
