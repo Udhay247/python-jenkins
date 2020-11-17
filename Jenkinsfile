@@ -13,11 +13,6 @@
 pipeline {
     agent any
     stages {
-        stage('SCM') {
-            steps {
-                git url: 'https://github.com/Udhay247/python-jenkins.git'
-            }
-        }
         stage('build && SonarQube analysis') {
             environment {
                 scannerHome = tool 'sonarscanner1'
