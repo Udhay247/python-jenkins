@@ -16,7 +16,7 @@ pipeline {
         stage("Generating coverage"){
             agent{
                 dockerfile{
-                    filename 'Dockerfile.build'
+                    filename 'Dockerfile'
                     additionalBuildArgs '-t pythonenv'
                 }
             }
