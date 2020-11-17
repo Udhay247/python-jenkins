@@ -1,6 +1,0 @@
-projectKey=flaskapp
-serverUrl=http://localhost:9003
-serverVersion=8.4.1.35646
-dashboardUrl=http://localhost:9003/dashboard?id=flaskapp
-ceTaskId=AXXV-r8tdboCh8cq57ez
-ceTaskUrl=http://localhost:9003/api/ce/task?id=AXXV-r8tdboCh8cq57ez

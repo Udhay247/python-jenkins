@@ -19,6 +19,7 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('sonarqube') {
+                    sh "coverage run -m pytest"
                     sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
                 }
             }
