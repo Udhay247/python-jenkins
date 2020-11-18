@@ -22,7 +22,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 ADD flaskapp ./flaskapp
 ADD tests ./tests
-COPY README.md setup.py ./
+COPY README.md setup.py setup.cfg ./
 COPY settings.xml ./
 
 coverage run -m pytest && coverage report && coverage xml
