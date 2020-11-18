@@ -22,20 +22,26 @@ pipeline {
             }
             steps{
                 sh "coverage run -m pytest && coverage report && coverage xml"
+                sh "pwd"
+                sh "ls"
+                sh "docker ps"
             }
         }
 
-//         stage('Copying coverage report from container'){
-//             steps{
-//                 sh " docker cp pythonenv:/app/python-services/coverage.xml ."
-//             }
-//         }
+        stage('Copying coverage report from container'){
+            steps{
+                sh "mkdir target"
+                sh "docker run -v $(pwd)/target/:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
+            }
+        }
         stage('build && SonarQube analysis') {
             environment {
                 scannerHome = tool 'sonarscanner1'
             }
             steps {
                 withSonarQubeEnv('sonarqube') {
+                    sh "docker ps"
+                    sh "docker images"
                     sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
                 }
             }
@@ -43,7 +49,7 @@ pipeline {
 
         stage(' Quality Gate') {
             steps{
-                timeout(time: 15, unit: 'MINUTES') {
+                timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }

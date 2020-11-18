@@ -21,8 +21,11 @@ COPY requirements.txt .
 #Install python packages
 RUN pip install -r requirements.txt
 ADD flaskapp ./flaskapp
+ADD tests ./tests
 COPY README.md setup.py ./
 COPY settings.xml ./
+
+coverage run -m pytest && coverage report && coverage xml
 
 #RUN pip install --user --upgrade setuptools wheel
 #RUN python3 setup.py pyassembly
