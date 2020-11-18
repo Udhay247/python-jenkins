@@ -1,13 +1,13 @@
 import setuptools
 
 setuptools.setup(
-    name="pyjenkins", # Replace with your own username
+    name="python-jenkins", # Replace with your own project/artifact name
     version="latest",
     author="Udhay",
     author_email="udhaya.kumar@247.ai",
     description="A small example package (Pyjenkins)",
     long_description_content_type="text/markdown",
-    url='https://github.home.247-inc.net/python-service-template/PyCICD_template.git',
+    url='https://github.com/Udhay247/python-jenkins.git',
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -1,19 +1,7 @@
-// node {
-//   stage('SCM') {
-//     git 'https://github.com/Udhay247/python-jenkins.git'
-//   }
-//   stage('SonarQube analysis') {
-//     def scannerHome = tool 'sonarscanner1';
-//     withSonarQubeEnv('sonarqube') { // If you have configured more than one global server connection, you can specify its name
-//       sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
-//     }
-//   }
-// }
-
 pipeline {
     agent any
     stages {
-        stage("Generating coverage"){
+        stage("Code coverage"){
             agent{
                 dockerfile{
                     filename 'Dockerfile'
@@ -25,12 +13,12 @@ pipeline {
             }
         }
 
-        stage('Copying coverage report from container'){
+        stage('Coverage report'){
             steps{
                 sh "docker run -v \$(pwd)/target:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
             }
         }
-        stage('build && SonarQube analysis') {
+        stage('SonarQube analysis') {
             environment {
                 scannerHome = tool 'sonarscanner1'
             }
@@ -41,7 +29,7 @@ pipeline {
             }
         }
 
-        stage(' Quality Gate') {
+        stage('Quality Gate') {
             steps{
                 timeout(time: 2, unit: 'MINUTES') {
                     script{
@@ -51,6 +39,13 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+
+        stage('Nexus deploy'){
+            docker.withRegistry('http://nexus.cicd.sv2.247-inc.net:5000', 'nexus-admin') {
+                docker.build("pyjenkins:1.3", "--build-arg service='pyjenkins' --build-arg version=1.3 -f ./Dockerfile_nexus_push .")
+                //customImage.push()
             }
         }
     }
