@@ -31,7 +31,7 @@ pipeline {
         stage('Copying coverage report from container'){
             steps{
                 sh "mkdir target"
-                sh "docker run -v $(pwd)/target/:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
+                sh "docker run -v ./target/:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
             }
         }
         stage('build && SonarQube analysis') {
