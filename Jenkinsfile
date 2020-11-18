@@ -31,7 +31,7 @@ pipeline {
             steps{
                 sh "mkdir target"
                 sh "ls"
-                sh "docker run -v ./target/:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
+                sh "docker run -v target/:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
             }
         }
         stage('build && SonarQube analysis') {
