@@ -17,7 +17,7 @@ ARG version=1.2
 COPY requirements.txt .
 
 #Install python packages
-RUN pip install pytest==6.1.1 coverage==5.3
+RUN pip install -r requirements.txt
 ADD flaskapp ./flaskapp
 ADD tests ./tests
 COPY README.md setup.py setup.cfg .coveragerc ./
