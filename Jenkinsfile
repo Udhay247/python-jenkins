@@ -24,13 +24,13 @@ pipeline {
                 sh "coverage run -m pytest && coverage report && coverage xml"
                 sh "pwd"
                 sh "ls"
-                sh "docker ps"
             }
         }
 
         stage('Copying coverage report from container'){
             steps{
                 sh "mkdir target"
+                sh "ls"
                 sh "docker run -v ./target/:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
             }
         }
