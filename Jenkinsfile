@@ -25,11 +25,11 @@ pipeline {
             }
         }
 
-        stage('Copying coverage report from container'){
-            steps{
-                sh " docker cp pythonenv:/app/python-services/coverage.xml ."
-            }
-        }
+//         stage('Copying coverage report from container'){
+//             steps{
+//                 sh " docker cp pythonenv:/app/python-services/coverage.xml ."
+//             }
+//         }
         stage('build && SonarQube analysis') {
             environment {
                 scannerHome = tool 'sonarscanner1'
