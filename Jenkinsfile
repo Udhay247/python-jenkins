@@ -22,17 +22,12 @@ pipeline {
             }
             steps{
                 sh "coverage run -m pytest && coverage report && coverage xml"
-                sh "pwd"
-                sh "ls"
             }
         }
 
         stage('Copying coverage report from container'){
             steps{
-                sh "ls"
                 sh "docker run -v \$(pwd)/target:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
-                sh "cd target"
-                sh "ls"
             }
         }
         stage('build && SonarQube analysis') {
@@ -41,8 +36,6 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh "docker ps"
-                    sh "docker images"
                     sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
                 }
             }
