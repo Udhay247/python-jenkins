@@ -43,9 +43,11 @@ pipeline {
         }
 
         stage('Nexus deploy'){
-            docker.withRegistry('http://nexus.cicd.sv2.247-inc.net:5000', 'nexus-admin') {
-                docker.build("pyjenkins:1.3", "--build-arg service='pyjenkins' --build-arg version=1.3 -f ./Dockerfile_nexus_push .")
-                //customImage.push()
+            steps{
+                docker.withRegistry('http://nexus.cicd.sv2.247-inc.net:5000', 'nexus-admin') {
+                    docker.build("pyjenkins:1.3", "--build-arg service='pyjenkins' --build-arg version=1.3 -f ./Dockerfile_nexus_push .")
+                    //customImage.push()
+                }
             }
         }
     }
