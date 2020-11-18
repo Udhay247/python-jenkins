@@ -32,6 +32,22 @@ def create_app(test_config=None):
     def hello_user(username):
         return 'Why Hello %s!' % username
 
+    @app.route('/hello/user2/<username1>')  # dynamic route
+    def hello_user(username1):
+        return 'Why Hello %s!' % username1
+
+    @app.route('/hello/user3/<username2>')  # dynamic route
+    def hello_user(username2):
+        return 'Why Hello %s!' % username2
+
+    @app.route('/hello/user4/<username3>')  # dynamic route
+    def hello_user(username3):
+        return 'Why Hello %s!' % username3
+
+    @app.route('/hello/user5/<username4>')  # dynamic route
+    def hello_user(username4):
+        return 'Why Hello %s!' % username4
+
     return app
 
 app = create_app()
