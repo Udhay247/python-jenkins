@@ -21,13 +21,13 @@ pipeline {
                 }
             }
             steps{
-                sh "coverage run -m pytest && coverage xml"
+                sh "coverage run -m pytest && coverage report && coverage xml"
             }
         }
 
         stage('Copying coverage report from container'){
             steps{
-                sh " docker cp pythonenv:/app/pyhton-services ."
+                sh " docker cp pythonenv:/app/python-services/coverage.xml ."
             }
         }
         stage('build && SonarQube analysis') {

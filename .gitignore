@@ -1,1 +1,7 @@
 .idea/
+.coverage
+.scannerwork/
+coverage.xml
+*__pycache__*
+flaskapp/__pycache__/
+tests/__pycache__/
