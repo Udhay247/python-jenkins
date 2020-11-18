@@ -30,7 +30,8 @@ pipeline {
         stage('Copying coverage report from container'){
             steps{
                 sh "ls"
-                sh "docker run -v coveragereport:/mnt/app --rm pythonenv cp coverage.xml /mnt/app"
+                sh "docker run -v $\(pwd\)/target:/mnt/app/ --rm pythonenv cp coverage.xml /mnt/app/"
+                sh "cd target"
                 sh "ls"
             }
         }
