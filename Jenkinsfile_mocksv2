@@ -9,7 +9,7 @@ pipeline {
                 }
             }
             steps{
-                sh "Ran coverage and got the reports"
+                sh "echo 'Ran coverage and got the reports'"
             }
         }
 
