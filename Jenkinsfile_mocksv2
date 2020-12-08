@@ -19,9 +19,17 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
+            #steps {
+            #    withSonarQubeEnv('sonarqube') {// sonarqube is the server instance name given in jenkins configuration
+            #        sh "/home/udhay/sonar-scanner-4.5.0.2216-linux/bin -Dproject.settings=sonar-project.properties"
+            #    }
+            #}
+            environment {
+                scannerHome = tool 'sonarscanner1' // sonarscanner1 is the object name that has been added in jenkins configuration
+            }
             steps {
-                withSonarQubeEnv('sonarqube') {// sonarqube is the server instance name given in jenkins configuration
-                    sh "/home/udhay/sonar-scanner-4.5.0.2216-linux/bin -Dproject.settings=sonar-project.properties"
+                withSonarQubeEnv('sonarqube') // sonarqube is the server instance name given in jenkins configuration {
+                    sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
                 }
             }
         }
