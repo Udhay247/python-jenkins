@@ -23,8 +23,8 @@ pipeline {
                 scannerHome = tool 'sonarscanner1' // sonarscanner1 is the object name that has been added in jenkins configuration
             }
             steps {
-                withSonarQubeEnv('sonarqube') { // sonarqube is the server instance name given in jenkins configuration {
-                    sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+                withSonarQubeEnv('SonarServer') { // sonarqube is the server instance name given in jenkins configuration {
+                    sh "/opt/sonarscanner/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
                 }
             }
         }
