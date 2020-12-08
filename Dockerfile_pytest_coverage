@@ -20,7 +20,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 ADD service ./service
 ADD tests ./tests
-COPY README.md setup.py setup.cfg .coveragerc ./
+COPY README.md setup.py setup.cfg .coveragerc logging.conf README.rst ./
 COPY settings.xml ./
 
 RUN coverage run -m pytest && coverage report && coverage xml
