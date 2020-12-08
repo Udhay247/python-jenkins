@@ -22,5 +22,6 @@ ADD service ./service
 ADD tests ./tests
 COPY README.md setup.py setup.cfg .coveragerc logging.conf README.rst ./
 COPY settings.xml ./
+RUN mkdir -p /var/log/pyservices/
 
 RUN coverage run -m pytest && coverage report && coverage xml
