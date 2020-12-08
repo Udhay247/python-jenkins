@@ -20,7 +20,7 @@ pipeline {
         }
         stage('SonarQube analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') // sonarqube is the server instance name given in jenkins configuration {
+                withSonarQubeEnv('sonarqube') {// sonarqube is the server instance name given in jenkins configuration
                     sh "/home/udhay/sonar-scanner-4.5.0.2216-linux/bin -Dproject.settings=sonar-project.properties"
                 }
             }
