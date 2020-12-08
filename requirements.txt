@@ -1,11 +1,5 @@
-pandas==0.24.2
-numpy==1.16.4
 Flask==1.1.1
 gunicorn==20.0.4
 requests==2.24.0
 gevent==1.4.0
-setuptools==50.3.2
-wheel==0.35.1
-pyassembly==2.3
-pytest==6.1.1
-coverage==5.3
+flask_restx==0.2.0
